@@ -1,0 +1,21 @@
+name: Emit receipt
+on:
+  workflow_dispatch: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make script executable
+        run: chmod +x ./olw.sh
+      - name: Run a demo command and emit receipt
+        run: ./olw.sh "echo hello && uname -a"
+      - name: Commit receipt
+        run: |
+          git config user.name "openline-bot"
+          git config user.email "openline-bot@users.noreply.github.com"
+          git add docs/receipt.latest.json
+          git commit -m "Add first receipt" || echo "no changes"
+          git push
