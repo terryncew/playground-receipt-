@@ -2,15 +2,40 @@
 <title>Receipt Demo</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
+<!-- Card component -->
 <script type="module"
-  src="https://cdn.jsdelivr.net/gh/terryncew/openline-core@main/receipts-kit/openline-card.js"></script>
+  src="https://cdn.jsdelivr.net/gh/terryncew/openline-core@main/receipts-kit/openline-card.js">
+</script>
 
 <h3 style="font-family:system-ui;margin:16px 0;">Live receipt</h3>
 
-<!-- Use an ABSOLUTE URL to avoid any relative-path/caching issues -->
-<openline-card mode="compact"
-  src="https://terryncew.github.io/playground-receipt-/receipt.latest.json"></openline-card>
-
+<!-- The card; we will set src from JS after probing -->
+<openline-card id="card" mode="compact" src=""></openline-card>
 <p style="font:14px/1.4 system-ui,sans-serif;color:#666;margin-top:16px">
+  Source: <code id="src">probing…</code><br>
   To update, run <code>./olw.sh "your command"</code> and commit the new receipt.
 </p>
+
+<script>
+(async () => {
+  const bust = '?v=' + Date.now();
+  const candidates = [
+    './receipt.latest.json',                                                // relative
+    'https://terryncew.github.io/playground-receipt-/receipt.latest.json',  // Pages
+    'https://raw.githubusercontent.com/terryncew/playground-receipt-/main/docs/receipt.latest.json' // RAW
+  ];
+
+  for (const base of candidates) {
+    const url = base + bust;
+    try {
+      const res = await fetch(url, { mode: 'cors', cache: 'no-store' });
+      if (res.ok) {
+        document.getElementById('card').setAttribute('src', url);
+        document.getElementById('src').textContent = base;
+        return;
+      }
+    } catch (e) { /* try next */ }
+  }
+  document.getElementById('src').textContent = 'No JSON resolved (check Pages settings and file path).';
+})();
+</script>
