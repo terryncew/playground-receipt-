@@ -2,15 +2,10 @@
   "title": "Receipt",
   "status": "OK",
   "point": "Run terminal command",
-  "because": [
-    "cmd: echo hello && uname -a",
-    "start: 2025-09-18T21:29:17Z",
-    "end: 2025-09-18T21:29:17Z"
-  ],
+  "because": ["cmd: echo hello", "start: NOW", "end: NOW"],
   "but": "",
   "so": "ok",
-  "output_preview": "hello
-Linux runnervmf4ws1 6.11.0-1018-azure #18~24.04.1-Ubuntu SMP Sat Jun 28 04:46:03 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux",
+  "output_preview": "hello",
   "metrics": { "delta_scale": 0.000, "threshold": 0.030, "status": "green" },
   "policy": { "use": "internal-demo", "share": "yes", "train": "no" }
 }
